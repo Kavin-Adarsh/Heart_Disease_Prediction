@@ -2,10 +2,10 @@
 
 
 
-run this on your terminal
+Run this on your terminal
 
--python app.py
+python app.py
 
-open this from your browser
+And open this from your browser
 
 http://127.0.0.1:5000
