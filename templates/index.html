@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Heart Disease Predictor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/myFile.css') }}"> 
+    <link rel="icon" href="{{ url_for('static', filename='logo.png') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url("{{ url_for('static', filename='background.jpg') }}"); /* Add the path to your background image */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            max-width: 1200px;
+            background: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .left-section {
+            flex: 1;
+            background: teal;
+            color: #fff;
+            padding: 20px;
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+        }
+
+        .left-section h1 {
+            font-size: 70px; /* Increased font size */
+            margin: 0;
+            padding: 0;
+        }
+
+        .right-section {
+            flex: 2;
+            padding: 20px;
+        }
+
+        .right-section form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .input-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+    
+        }
+
+        .input-group label,
+        .input-group select,
+        .input-group input {
+            width: 48%;
+            margin-left: 20px;
+        }
+
+        input, select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        select {
+            padding-left: 25px;
+        }
+
+
+        button {
+            background: teal;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+            margin: 0 auto;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        #response {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body> 
+
+    <div class="container">
+        <div class="left-section">
+            <h1>HEART DISEASE PREDICTOR</h1>
+        </div>
+        <div class="right-section">
+            <form id="requestForm">
+                <div class="input-group">
+                    <label for="age">Age:</label>
+                    <input type="text" id="requestInput1" name="age" placeholder="Enter your age">
+                    <label for="sex">Sex:</label>
+                    <select id="requestInput2" name="sex">
+                        <option value="1">Male</option>
+                        <option value="0">Female</option>
+                    </select>
+
+                </div>
+
+
+
+                <div class="input-group">
+                    <label for="sex">Chest Pain (cp):</label>
+                    <select id="requestInput3" name="cp">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
+                    <label for="trestbps">Resting Blood Pressure (trestbps):</label>
+                    <input type="text" id="requestInput4" name="trestbps" placeholder="Enter your trestbps">
+                </div>
+
+                <div class="input-group">
+                    <label for="chol">Cholesterol (chol in mg/dl):</label>
+                    <input type="text" id="requestInput5" name="chol" placeholder="Enter your chol">
+                    <label for="fbs">Fasting Blood Sugar (fbs>120 mg/dl):</label>
+                    <input type="text" id="requestInput6" name="fbs" placeholder="Enter your fbs">
+                </div>
+
+                <div class="input-group">
+                    <label for="restecg">Resting ECG (restecg):</label>
+                    <select id="requestInput7" name="restecg">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                    </select>
+                    <label for="thalach">Max Heart Rate (thalach):</label>
+                    <input type="text" id="requestInput8" name="thalach" placeholder="Enter your thalach">
+                </div>
+
+                <div class="input-group">
+                    <label for="exang">Exercise-Induced Angina (exang):</label>
+                    <input type="text" id="requestInput9" name="exang" placeholder="Enter your exang">
+                    <label for="thal">Thalassemia (thal):</label>
+                    <select id="requestInput10" name="thal">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                    </select>
+                </div>
+
+                <br><br>
+
+                <button style="display: inline; margin-left: 560px;" type="button" id="submitButton">Submit</button>
+            </form>
+
+            <br><br>
+
+            <div style="display: inline;" id="response"></div>
+            <button style="display: inline; position: absolute;; top: 540px; right: 90px; padding-left: 25px; padding-right: 25px;" type="button" id="clearButton">Clear</button>
+
+        </div>
+    </div>
+
+    <script>
+
+            document.getElementById('requestInput1').value = '';
+            document.getElementById('requestInput2').value = '';
+            document.getElementById('requestInput3').value = '';
+            document.getElementById('requestInput4').value = '';
+            document.getElementById('requestInput5').value = '';
+            document.getElementById('requestInput6').value = '';
+            document.getElementById('requestInput7').value = '';
+            document.getElementById('requestInput8').value = '';
+            document.getElementById('requestInput9').value = '';
+            document.getElementById('requestInput10').value = '';
+
+        document.getElementById('submitButton').addEventListener('click', function () {
+            const request1 = document.getElementById('requestInput1').value;
+            const request2 = document.getElementById('requestInput2').value;
+            const request3 = document.getElementById('requestInput3').value;
+            const request4 = document.getElementById('requestInput4').value;
+            const request5 = document.getElementById('requestInput5').value;
+            const request6 = document.getElementById('requestInput6').value;
+            const request7 = document.getElementById('requestInput7').value;
+            const request8 = document.getElementById('requestInput8').value;
+            const request9 = document.getElementById('requestInput9').value;
+            const request10 = document.getElementById('requestInput10').value;
+
+            const req = [request1, request2, request3, request4, request5, request6, request7, request8, request9, request10];
+
+            fetch('/process', {
+                method: 'POST',
+                body: JSON.stringify({ request: req }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('response').innerHTML = data.response;
+                });
+        });
+
+        document.getElementById('clearButton').addEventListener('click', function () {
+            document.getElementById('requestInput1').value = '';
+            document.getElementById('requestInput2').value = '';
+            document.getElementById('requestInput3').value = '';
+            document.getElementById('requestInput4').value = '';
+            document.getElementById('requestInput5').value = '';
+            document.getElementById('requestInput6').value = '';
+            document.getElementById('requestInput7').value = '';
+            document.getElementById('requestInput8').value = '';
+            document.getElementById('requestInput9').value = '';
+            document.getElementById('requestInput10').value = '';
+
+
+            document.getElementById('response').innerHTML = '';
+        });
+    </script>
+</body>
+</html>
